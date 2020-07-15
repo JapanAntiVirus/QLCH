@@ -1,0 +1,690 @@
+﻿go
+use master
+if db_id('QuanLyCuaHang') IS NOT NULL
+	drop database QuanLyCuaHang;
+
+go
+create database QuanLyCuaHang;
+ 
+go
+use QuanLyCuaHang
+create table SanPham(
+	MaSanPham int identity(100,1) primary key,
+	TenSanPham nvarchar(100),
+	DonViTinh nvarchar(10),
+	DonGia int,
+	SoLuongTon int
+);
+
+go
+create table KhachHang(
+	MaKhach int identity(100,1) primary key,
+	HoDem nvarchar(30) not null,
+	Ten nvarchar(30) not null,
+	GioiTinh nvarchar(3),
+	SDT varchar(11),
+	NgaySinh date,
+	DiaChi nvarchar(200)
+);
+
+create table NhanVien(
+	MaNV int identity(100,1) primary key,
+	HoDem nvarchar(30) not null,
+	Ten nvarchar(30) not null,
+	GioiTinh nvarchar(3),
+	NgaySinh date,
+	DiaChi nvarchar(200),
+	SDT varchar(11),
+	CMND varchar(13),
+	Luong int not null,
+	NgayBatDauLam date default getdate()  not null,
+	ChucVu nvarchar(30)
+);
+create table NhaCungCap(
+	MaNCC int identity(100,1) primary key,
+	TenNCC nvarchar(100)  not null,
+	SDT varchar(11),
+	DiaChi nvarchar(200)
+);
+
+go
+create table NhapHang(
+	MaNhap int identity(100,1) primary key,
+	MaNCC int  references NhaCungCap(MaNCC),
+	MaSanPham int references SanPham(MaSanPham),
+	NgayNhap Date,
+	SoLuong int
+);
+create table HoaDon(
+	SoHoaDon int identity(100,1) primary key,
+	MaKhach int  references KhachHang(MaKhach),
+	MaNV int references NhanVien(MaNV),
+	GiamGia int,
+	NgayHoaDon datetime default getdate(),
+	TongTien int
+);
+
+go
+create table ChiTietHD(
+	SoHoaDon int references HoaDon(SoHoaDon),
+	MaSanPham int references SanPham(MaSanPham),
+	SoLuong int,
+	ThanhTien int,
+	primary key (SoHoaDon,MaSanPham)
+);
+
+go
+create table NhomQuyen(
+	MaNhomQuyen int primary key,
+	TenNhomQuyen nvarchar(30)
+);
+
+go
+create table ChiTietNhomQuyen(
+	id int primary key,
+	MaNhomQuyen int references NhomQuyen(MaNhomQuyen),
+	TenQuyen nvarchar(30)
+);
+
+create table TaiKhoan(
+	MaTK int identity primary key,
+	MaNV int references NhanVien(MaNV),
+	TenTK varchar(15),
+	MatKhau varchar(15),
+	MaNhomQuyen int references NhomQuyen(MaNhomQuyen)
+);
+
+------------------------------------------------SẢN PHẨM-------------------------------------------------------
+go
+create procedure ThemSanPham
+	@TenSanPham nvarchar(100),
+	@DonViTinh nvarchar(10),
+	@DonGia int,
+	@SoLuongTon int
+as
+	insert into SanPham values (@TenSanPham,@DonViTinh,@DonGia,@SoLuongTon);
+
+go
+create procedure XoaSanPham
+	@MaSanPham int
+as
+	delete from SanPham where MaSanPham=@MaSanPham
+
+go
+create procedure SuaSanPham
+	@MaSanPham int,
+	@TenSanPham nvarchar(100),
+	@DonViTinh nvarchar(10),
+	@DonGia int,
+	@SoLuongTon int
+as
+		update SanPham
+		set TenSanPham=@TenSanPham, DonViTinh=@DonViTinh, DonGia=@DonGia, SoLuongTon=@SoLuongTon
+		where MaSanPham=@MaSanPham;
+
+go
+create trigger SanPham_Insert_Update
+on SanPham
+after insert,update
+as
+if exists (select * from inserted where inserted.TenSanPham='' )
+	throw 50001,N'Tên sản phẩm không được để trống',1;
+
+go
+create function Search
+(@x nvarchar(30))
+returns table
+as
+return (select * from SanPham where SanPham.MaSanPham like'%' + @x +'%'or SanPham.TenSanPham like'%' + @x +'%')
+
+
+-------------------------------------------KHÁCH HÀNG--------------------------------------------------------
+go
+create procedure ThemKhachHang
+	@HoDem nvarchar(30),
+	@Ten nvarchar(30),
+	@GioiTinh nvarchar(3),
+	@SDT varchar(11),
+	@NgaySinh date,
+	@DiaChi nvarchar(200)
+as
+	begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50002,N'Số điện thoại không hợp lệ',1;
+	end catch;
+	insert into KhachHang values (@HoDem,@Ten,@GioiTinh,@SDT,@NgaySinh,@DiaChi);
+
+go
+create procedure XoaKhachHang
+	@MaKhach int
+as
+	delete from KhachHang where @MaKhach = MaKhach
+
+go
+create procedure SuaKhachHang
+	@MaKhach int,
+	@HoDem nvarchar(30),
+	@Ten nvarchar(30),
+	@GioiTinh nvarchar(3),
+	@SDT varchar(11),
+	@NgaySinh date,
+	@DiaChi nvarchar(200)
+as
+	begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50005,N'Số điện thoại không hợp lệ',1;
+	end catch
+	update KhachHang
+	set  HoDem=@HoDem, Ten=@Ten, GioiTinh=@GioiTinh, SDT=@SDT, NgaySinh=@NgaySinh, DiaChi=@DiaChi
+	where MaKhach=@MaKhach;
+
+go
+create trigger KhachHang_Insert_Update
+on KhachHang
+after insert,update
+as
+if exists (select * from inserted where inserted.HoDem='' or inserted.Ten='')
+	throw 50003,N'Họ, tên không được để trống',1;
+
+go
+create function Search_KhachHang
+(@x nvarchar(30))
+returns table
+as
+return (select * from KhachHang where KhachHang.MaKhach like'%' + @x +'%'or KhachHang.Ten like'%' + @x +'%')
+
+
+-------------------------------------------NHÂN VIÊN--------------------------------------------------------
+go
+create procedure ThemNhanVien
+	@HoDem nvarchar(30),
+	@Ten nvarchar(30),
+	@GioiTinh nvarchar(3),
+	@NgaySinh date,
+	@DiaChi nvarchar(200),
+	@SDT varchar(11),
+	@CMND varchar(13),
+	@Luong int,
+	@ChucVu nvarchar(30)
+as
+	begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50004,N'Số điện thoại không hợp lệ',1;
+	end catch
+	insert into NhanVien values (@HoDem,@Ten,@GioiTinh,@NgaySinh,@SDT,@CMND,@DiaChi,@Luong,GETDATE(),@ChucVu);
+
+go
+create procedure SuaNhanVien
+	@MaNV int,
+	@HoDem nvarchar(30),
+	@Ten nvarchar(30),
+	@GioiTinh nvarchar(3),
+	@NgaySinh date,
+	@DiaChi nvarchar(200),
+	@SDT varchar(11),
+	@CMND varchar(13),
+	@Luong int,
+	@ChucVu nvarchar(30)
+as
+	begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50005,N'Số điện thoại không hợp lệ',1;
+	end catch;
+	update NhanVien
+	set HoDem=@HoDem,Ten=@Ten,GioiTinh=@GioiTinh,NgaySinh=@NgaySinh,DiaChi=@DiaChi,SDT=@SDT,CMND=@CMND,Luong=@Luong,ChucVu=@ChucVu
+	where MaNV=@MaNV;
+
+go
+create procedure XoaNhanVien
+	@MaNV int
+as
+	delete from NhanVien where MaNV = @MaNV;
+
+go
+create trigger NhanVien_Insert_Update
+on NhanVien
+after insert,update
+as
+if exists (select * from inserted where inserted.HoDem='' or inserted.Ten='')
+	throw 50006,N'Họ, tên không được để trống',1;
+if exists (select * from inserted)
+begin
+	declare @MaNV int = (select MaNV from inserted);
+	declare @username varchar(15)= 'NV' + convert(varchar,@MaNV);
+	declare @password varchar(15) = '123456'
+	declare @NhomQuyen int = (select MaNhomQuyen from NhomQuyen where TenNhomQuyen = (select ChucVu from inserted));
+	execute TaoTaiKhoan @MaNV,@username,@password,@NhomQuyen;
+end
+
+go
+create function ThongTinNV
+	(@MaNV int)
+	returns table
+as
+	return (select HoDem + ' ' + Ten as 'Ten', ChucVu from NhanVien Where MaNV=@MaNV);
+
+---------------------------------------NHÀ CUNG CẤP----------------------------------------------------
+go
+create proc ThemNCC
+@HoTen nvarchar(100),
+@DiaChi nvarchar(200),
+@SDT varchar(11)
+as
+begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50007,N'Số điện thoại không hợp lệ',1;
+	end catch
+	insert into NhaCungCap values (@HoTen,@SDT,@DiaChi);
+go
+
+create procedure XoaNCC
+	@MaNCC int
+as
+	delete from NhaCungCap where MaNCC=@MaNCC
+	 
+go
+
+go
+create procedure SuaNCC
+	@MaNCC int,
+	@HoTen nvarchar(100),
+	@DiaChi nvarchar(200),
+	@SDT varchar(11)
+as
+begin try
+		select (convert (int,@SDT))
+	end try
+	begin catch
+		throw 50008,N'Số điện thoại không hợp lệ',1;
+	end catch
+	update NhaCungCap
+	set TenNCC=@HoTen, DiaChi=@DiaChi, SDT=@SDT
+	where MaNCC=@MaNCC;
+
+go
+create trigger NCC_Insert_Update
+on NhaCungCap
+after insert,update
+as
+if exists (select * from inserted where inserted.TenNCC='')
+	throw 50009,N'Tên nhà cung cấp không được để trống',1;
+
+go
+create function Search_NCC
+(@x nvarchar(100))
+returns table
+as
+return (select * from NhaCungCap where NhaCungCap.MaNCC like'%' + @x +'%'or NhaCungCap.TenNCC like'%' + @x +'%')
+
+---------------------------------------HÓA ĐƠN----------------------------------------------------
+go
+create procedure ThemHD
+	@MaKhach int =null,
+	@MaNV int = null,
+	@GiamGia int,
+	@TongTien int=0
+as
+	insert into HoaDon values (@MaKhach,@MaNV,@GiamGia,GETDATE(),@TongTien);
+
+go
+create function SoHDMax ()
+	returns table
+as
+	return (select MAX(SoHoaDon) as SoHDMax from HoaDon);
+
+-----------------------------------CHI TIẾT HÓA ĐƠN--------------------------------------------------
+go
+create procedure ThemChiTietHD
+	@SoHoaDon int, 
+	@MaSanPham int,
+	@SoLuong int,
+	@ThanhTien int=0
+as
+	insert into ChiTietHD values (@SoHoaDon,@MaSanPham,@SoLuong,@ThanhTien);
+
+go
+create trigger ChiTietHD_Insert
+	on ChiTietHD
+	after insert
+as
+begin
+	update SanPham
+	set SoLuongTon = SoLuongTon - (select inserted.SoLuong from inserted where inserted.MaSanPham=MaSanPham)
+	where MaSanPham = (select inserted.MaSanPham from inserted);
+
+	declare @tien int;
+	update ChiTietHD
+	set @tien= ThanhTien = (select DonGia from SanPham where SanPham.MaSanPham = (select MaSanPham from inserted)) * SoLuong
+	where MaSanPham = (select MaSanPham from inserted);
+
+	update HoaDon
+	set TongTien = TongTien + @tien*(100-GiamGia)/100; 
+end
+--------------------------------------VIEW HÓA ĐƠN--------------------------------------------------
+go
+create view ViewChiTietHD
+as
+select	h.SoHoaDon,s.MaSanPham,TenSanPham,SoLuong,DonViTinh ,DonGia,ThanhTien
+from ChiTietHD c join SanPham s on c.MaSanPham=s.MaSanPham
+			     join HoaDon h on c.SoHoaDon = h.SoHoaDon
+				 left join NhanVien nv on h.MaNV = nv.MaNV
+				 left join KhachHang k on h.MaKhach=k.MaKhach;
+go
+create view ViewHD
+as
+select	h.SoHoaDon,NgayHoaDon,nv.HoDem + ' ' + nv.Ten as N'Nhân viên',k.MaKhach,k.HoDem + ' ' + k.Ten as N'Tên khách',GiamGia,TongTien
+from HoaDon h left join NhanVien nv on h.MaNV = nv.MaNV
+				 left join KhachHang k on h.MaKhach=k.MaKhach;
+go
+select * from KhachHang
+-------------------------------------NHẬP HÀNG---------------------------------------------------
+go
+create proc ThemDonHang
+@MaNCC int,
+@MaSP int,
+@NgayNhap date,
+@SoLuong int
+as
+insert into NhapHang values (@MaNCC,@MaSP,@NgayNhap,@SoLuong);
+
+go
+create proc SuaDonHang
+@MaNhap int,
+@MaNCC int,
+@MaSP int,
+
+@NgayNhap date,
+@SoLuong int
+as
+update NhapHang 
+set MaNCC = @MaNCC, MaSanPham = @MaSP, NgayNhap = @NgayNhap, SoLuong = @SoLuong
+where MaNhap = @MaNhap;
+
+go
+create proc XoaDonHang
+@MaNhap int
+as
+delete from NhapHang where MaNhap = @MaNhap;
+
+go
+create trigger NhapHang_Insert_Delete_Update
+on NhapHang
+after insert,delete,update
+as
+if exists (select * from inserted)
+	update SanPham 
+		set SoLuongTon = SoLuongTon + (select inserted.SoLuong from inserted 
+								 where inserted.MaSanPham = MaSanPham );
+if exists (select * from deleted)
+update SanPham
+	 set SoLuongTon = SoLuongTon -(select deleted.SoLuong from deleted
+	                                 where deleted.MaSanPham = MaSanPham);
+
+go
+-------------------------------------PHÂN QUYỀN---------------------------------------------------
+--use QuanLyCuaHang
+
+--exec sp_addlogin 'admin' ,'admin'
+
+--exec sp_adduser 'admin',N'admin'
+
+--exec sp_addrolemember 'db_owner', N'admin'
+--go
+--create proc TaoTaiKhoan
+--@userName varchar(20),
+--@passWord char(12),
+--@Name nvarchar(50)
+--as
+--exec sp_addlogin @userName,@passWord
+
+--exec sp_adduser @userName,@Name
+
+--exec sp_addrolemember 'db_owner', @Name
+
+select * from TaiKhoan
+insert into NhomQuyen values (1,N'Quản lý');
+insert into NhomQuyen values (2,N'Nhân viên');
+
+insert into ChiTietNhomQuyen values (1,1,N'Thêm');
+insert into ChiTietNhomQuyen values (2,1,N'Sửa');
+insert into ChiTietNhomQuyen values (3,1,N'Xóa');
+insert into ChiTietNhomQuyen values (4,1,N'Xem');
+insert into ChiTietNhomQuyen values (5,2,N'Xem');
+
+insert into TaiKhoan values(null,'admin','admin',1)
+
+go
+create procedure TaoTaiKhoan
+	@MaNV int,
+	@username varchar(15),
+	@password varchar(15),
+	@NhomQuyen int
+as
+	insert into TaiKhoan values (@MaNV,@username,@password,@NhomQuyen)
+
+-------------------------------------DỮ LIỆU---------------------------------------------------
+go
+insert into SanPham values (N'Mèo bông Pusheen',N'Con',250000,20);
+insert into SanPham values (N'Hà mã bông',N'Con',200000,30);
+insert into SanPham values (N'Mèo bông mặt bự',N'Con',300000,40);
+insert into SanPham values (N'Chó bông Husky',N'Con',680000,25);
+insert into SanPham values (N'Thỏ bông gối ôm',N'Con',250000,50);
+insert into SanPham values (N'Gấu bông Hello Kitty',N'Con',250000,35);
+insert into SanPham values (N'Gấu trúc Panda',N'Con',230000,45);
+insert into SanPham values (N'Gấu trúc Metoo',N'Con',170000,20);
+insert into SanPham values (N'Thỏ hồng Metoo',N'Con',170000,20);
+insert into SanPham values (N'Gấu bông Teddy Boy',N'Con',850000,15);
+
+insert into SanPham values (N'Gấu bông Teddy Lavender',N'Con',350000,40);
+insert into SanPham values (N'Cá heo nhồi bông',N'Con',450000,15);
+insert into SanPham values (N'Gấu bông Doremon',N'Con',550000,20);
+insert into SanPham values (N'Gấu bông Shin',N'Con',430000,30);
+insert into SanPham values (N'Khỉ bông mắt to',N'Con',420000,26);
+insert into SanPham values (N'Gấu bông vịt Donald',N'Con',150000,50);
+insert into SanPham values (N'Cừu bông',N'Con',120000,50);
+insert into SanPham values (N'Gấu bông hươu cao cổ',N'Con',400000,20);
+insert into SanPham values (N'Gấu bông Minion',N'Con',600000,25);
+insert into SanPham values (N'Gấu bông mèo Chii',N'Con',270000,30);
+
+insert into SanPham values (N'Chú nhím nhồi bông',N'Con',380000,23);
+insert into SanPham values (N'Voi bông',N'Con',250000,25);
+insert into SanPham values (N'Carot bông',N'Con',600000,40);
+insert into SanPham values (N'Gấu bông Mr.Bean',N'Con',200000,20);
+insert into SanPham values (N'Cá mập bông Sharks',N'Con',360000,24);
+insert into SanPham values (N'Gấu bông bò sữa',N'Con',350000,26);
+insert into SanPham values (N'Khỉ bông đeo kính',N'Con',190000,20);
+insert into SanPham values (N'Gấu bông Hello Kitty cookie',N'Con',250000,24);
+insert into SanPham values (N'Cua bông',N'Con',100000,20);
+insert into SanPham values (N'Gấu pooh nhồi bông',N'Con',650000,20);
+
+insert into SanPham values (N'Dây chuyền bạc bông tuyết',N'Dây',350000,20);
+insert into SanPham values (N'Dây chuyền bạc hoa tuyết',N'Dây',365000,25);
+insert into SanPham values (N'Dây chuyền bạc ngôi sao',N'Dây',300000,30);
+insert into SanPham values (N'Dây chuyền bạc trái tim',N'Dây',400000,35);
+insert into SanPham values (N'Dây chuyền bạc chữ Love',N'Dây',400000,26);
+insert into SanPham values (N'Khuyên tai ngôi sao',N'Đôi',250000,25);
+insert into SanPham values (N'Khuyên tai hoa tuyết',N'Đôi',200000,20);
+insert into SanPham values (N'Bông tai nơ bạc',N'Đôi',200000,20);
+insert into SanPham values (N'Bông tai bạc chữ Love',N'Đôi',200000,25);
+insert into SanPham values (N'Đôi thiên nga gốm sứ',N'Đôi',1250000,20);
+
+insert into SanPham values (N'Hoa hồng hộp gỗ xanh',N'Hộp',230000,30);
+insert into SanPham values (N'Hoa hồng hộp gỗ đỏ',N'Hộp',230000,30);
+insert into SanPham values (N'Hoa hồng hộp gỗ hồng phấn',N'Hộp',230000,30);
+insert into SanPham values (N'Lọ hoa Love Nature',N'Lọ',250000,25);
+insert into SanPham values (N'Ví nữ nhiều ngăn tiện dụng',N'Chiếc',430000,35);
+insert into SanPham values (N'Thiệp chúc mừng',N'Chiếc',20000,100);
+insert into SanPham values (N'Cốc sứ',N'Chiếc',120000,60);
+insert into SanPham values (N'Khung ảnh',N'Chiếc',200000,20);
+insert into SanPham values (N'Mèo thần tài',N'Con',860000,60);
+insert into SanPham values (N'Hộp nhạc quả cầu tuyết',N'Hộp',350000,100);
+
+go
+insert into NhaCungCap values (N'Công Ty Cổ Phần Quốc Tế Thịnh Đạt','0422187082',N'Tầng 2, Tòa nhà 101 Láng Hạ, p.Láng Hạ, Q. Đống Đa, Hà Nội');
+insert into NhaCungCap values (N'Công Ty TNHH Sản Xuất Thương Mại Dịch Vụ Hoàng Tâm','02839483845',N'720/10 Âu Cơ, Phường 14, Quận Tân Bình, Tp. Hồ Chí Minh ');
+insert into NhaCungCap values (N'Công Ty TNHH Quà Tặng Nguyễn Minh Đức','02862818856',N'Số 401/17, Nguyễn Duy Trinh, P. Bình Trưng Tây, Q. 2, Tp. Hồ Chí Minh (TPHCM) ');
+insert into NhaCungCap values (N'Công Ty Cổ Phần TYP Việt Nam','02439991686',N'Số 4, Ngõ 105/47 Phố Vọng Hà, P. Chương Dương, Q. Hoàn Kiếm, Hà Nội ');
+insert into NhaCungCap values (N'Công Ty TNHH Sản Xuất Thương Mại Dịch Vụ Quảng Cáo Nụ Cười','02837583032',N'137/55/33 Trần Đình Xu, P. Nguyễn Cư Trinh, Q. 1, Tp. Hồ Chí Minh (TPHCM) ');
+insert into NhaCungCap values (N'Công Ty TNHH Mai Thanh Bảo','02837200157',N'7/16/4 Linh Đông, P. Linh Đông, Q. Thủ Đức, Tp. Hồ Chí Minh (TPHCM) ');
+insert into NhaCungCap values (N'Công Ty TNHH Thương Mại Và Sản Xuất Xuất Nhập Khẩu Vy Linh','01682168888',N' Nguyễn Hữu Tuệ, P. Gia Viên, Q. Ngô Quyền, Tp. Hải Phòng, Việt Nam');
+
+insert into NhaCungCap values (N'Xưởng Sản Xuất Thú Nhồi Bông Thiên Nga','0938999367',N' 113 - Đ. Số 1, P. Bình Hưng Hòa A, Q. Bình Tân, Tp. Hồ Chí Minh (TPHCM), Việt Nam');
+insert into NhaCungCap values (N'Công Ty TNHH MTV Sản Xuất Thú Bông Thế Khởi','0988145560',N'Số 20, Đường Nguyễn Văn Lên, Khu 2, Phú Lợi, Thủ Dầu Một, Bình Dương, Việt Nam ');
+insert into NhaCungCap values (N'CÔNG TY TNHH VÀNG BẠC ĐÁ QUÝ HOÀNG NGỌC LAN','0838434355',N'3 Hồng Bàng, P. 1, Q. Bình Thạnh, Tp. Hồ Chí Minh ');
+
+go
+insert into NhanVien values (N'Cao Thị',N'Lý',N'Nữ','12/02/1993',N'Hà Nội','0123456789','123456789',50000,'12/09/2016',N'Quản lý' );
+insert into NhanVien values (N'Vũ Thị',N'Thủy',N'Nữ','01/05/1996',N'Hà Tây','0963456789','345678921',40000,'01/19/2017',N'Quản lý' );
+insert into NhanVien values (N'Hồ Thị',N'Ngân',N'Nữ','02/15/1997',N'Sơn Tây','0125666789','567894320',30000,'12/15/2016',N'Nhân Viên' );
+insert into NhanVien values (N'Nguyễn Thị',N'Nga',N'Nữ','09/02/1998',N'Nam Định','0956886789','123789456',20000,'12/15/2016',N'Nhân Viên' );
+insert into NhanVien values (N'Trần Văn',N'Hà',N'Nam','06/08/1994',N'Hải Dương','0863456789','456123789',20000,'03/02/2017',N'Nhân Viên' );
+
+go
+insert into NhapHang values(100,149,'03/20/2018',20);
+insert into NhapHang values(101,130,'03/15/2018',30);
+insert into NhapHang values(102,111,'02/10/2018',25);
+insert into NhapHang values(103,120,'04/21/2018',35);
+insert into NhapHang values(104,132,'05/19/2018',30);
+insert into NhapHang values(105,136,'06/16/2018',15);
+insert into NhapHang values(107,125,'08/25/2018',20);
+insert into NhapHang values(108,105,'09/07/2018',35);
+
+insert into NhapHang values(100,113,'10/02/2018',20);
+insert into NhapHang values(101,127,'04/21/2018',30);
+insert into NhapHang values(102,134,'04/02/2018',35);
+insert into NhapHang values(103,141,'03/26/2018',25);
+insert into NhapHang values(104,143,'05/10/2018',20);
+insert into NhapHang values(105,108,'07/23/2018',15);
+insert into NhapHang values(107,114,'09/14/2018',35);
+insert into NhapHang values(108,147,'08/16/2018',30);
+
+go
+insert into KhachHang values(N'Bùi Thị Lan',N'Anh',N'Nữ','01651060751','12/09/1997',N'số 9, Vĩnh Hồ');
+insert into KhachHang values(N'Nguyễn Ngọc',N'Anh',N'Nữ','01651060752','11/09/1999',N'số 91, Khâm Thiên');
+insert into KhachHang values(N'Bùi Gia',N'Linh',N'Nữ','01651060753','10/30/1973',N'số 19, Trần Nhân Tông');
+insert into KhachHang values(N'Phạm Thị Thu',N'Thảo',N'Nữ','01651060754','03/09/1995',N'số 6, Nguyễn Lương Bằng');
+insert into KhachHang values(N'Tô Mộc',N'Miên',N'Nữ','01651060755','04/09/1997',N'số 67, Vĩnh Hồ');
+insert into KhachHang values(N'Lưu Hàn',N'Giang',N'Nữ','01651060756','08/09/1998',N'số 9, Ngô Quyền');
+insert into KhachHang values(N'Nguyễn Thị',N'Thanh',N'Nữ','01651060757','01/09/1990',N'số 9, Trần Quốc Tuấn');
+insert into KhachHang values(N'Bùi Thảo',N'My',N'Nữ','01651060758','11/29/1997',N'số 90, Nguyễn Du');
+insert into KhachHang values(N'Lương Chi',N'Hoa',N'Nữ','01651060759','02/03/1994',N'số 34, Trần Hưng Đạo');
+insert into KhachHang values(N'Bùi Thị Lan',N'Khuê',N'Nữ','01651060750','02/19/1996',N'số 12, Lê Duẩn');
+---
+insert into KhachHang values(N'Nguyễn Thị',N'Nhàn',N'Nữ','01651060760','03/09/1980',N'số 7, Giải Phóng');
+insert into KhachHang values(N'Bùi Thanh',N'Anh',N'Nữ','01651060761','12/09/1990',N'số 92, Tràng Thi');
+insert into KhachHang values(N'Lê Ngọc',N'Hương',N'Nữ','01651060762','02/10/1992',N'số 1, Khâm Thiên');
+insert into KhachHang values(N'Dương Thị',N'Huệ',N'Nữ','01651060763','12/09/1997',N'số 9, Vĩnh Hồ');
+insert into KhachHang values(N'Trần Huyền',N'Trang',N'Nữ','01651060764','11/09/1999',N'số 1, Lê Duẩn');
+insert into KhachHang values(N'Đào Ngọc',N'Tú',N'Nữ','01651060765','01/21/2000',N'số 91, An Dương Vương');
+insert into KhachHang values(N'Nguyễn Hồng',N'Thúy',N'Nữ','01651060766','04/30/1995',N'số 19, Vĩnh Hồ');
+insert into KhachHang values(N'Lâm Như',N'Ý','Nữ','01651060767','09/15/1981',N'số 34, Tây Sơn');
+insert into KhachHang values(N'Đặng Thị',N'Thu',N'Nữ','01651060768','12/11/1998',N'số 12, Chùa Bộc');
+insert into KhachHang values(N'Hoàng Ngọc',N'Lan',N'Nữ','01651060769','10/12/1912',N'số 17, Phạm Ngọc Thạch');
+insert into KhachHang values(N'Đoàn Thị',N'Linh',N'Nữ','0165106077','12/09/1994',N'số 14, Đông Các');
+--
+insert into KhachHang values(N'Nguyễn Văn',N'Mạnh',N'Nam','01684060011','10/21/1989',N'số 245, Khâm Thiên');
+insert into KhachHang values(N'Hoàng',N'Sơn',N'Nam','01644061133','10/27/1999',N'số 876, Lê Duẩn');
+insert into KhachHang values(N'Nguyễn Nhật',N'Linh',N'Nam','01674060099','11/22/1989',N'số 51, Khâm ThiêN');
+insert into KhachHang values(N'Đỗ Văn',N'Thủy',N'Nam','01654061122','09/20/1992',N'số 98, Tây Sơn');
+insert into KhachHang values(N'Lương Tất',N'Đông',N'Nam','01664064455','07/11/1982',N'số 223, Đặng Tiến Đông');
+insert into KhachHang values(N'Bùi Duy',N'Bắc',N'Nam','0163406098','08/15/1981',N'số 324, Hoàng Cầu');
+insert into KhachHang values(N'Hà Anh',N'Tuấn',N'Nam','01624060124','07/09/1981',N'số 294, Thái Hà');
+insert into KhachHang values(N'Nguyễn Văn',N'Thông',N'Nam','01674060876','10/03/1984',N'số 948, Phạm Ngọc Thạch');
+insert into KhachHang values(N'Bùi Quốc',N'Anh',N'Nam','0911060790','12/19/1997',N'số 12, Láng Hạ');
+insert into KhachHang values(N'Huỳnh Văn',N'Tú',N'Nam','0911060791','10/29/1999',N'số 116, Phố Vọng');
+---
+insert into KhachHang values(N'Nguyễn Thành',N'Nam',N'Nam','0981060792','09/09/1981',N'số 15, Trần Hưng Đạo');
+insert into KhachHang values(N'Lương An',N'Khánh',N'Nam','0971060793','02/12/1980',N'số 109, Trần Duy Hưng');
+insert into KhachHang values(N'Đinh Hoàng',N'Phú',N'Nam','0961060794','10/28/1997',N'số 14, Lê Thái Tổ');
+insert into KhachHang values(N'Hoàng Hoài',N'An',N'Nam','0951060795','03/18/1990',N'số 28, Hoàng Quốc Việt');
+insert into KhachHang values(N'Đỗ Duy',N'Mạnh',N'Nam','941060796','02/10/1990',N'số 168, Nguyễn Chí Thanh');
+insert into KhachHang values(N'Bùi Mạnh',N'Hải',N'Nam','01671060678','11/19/1997',N'số 9, Kim Liên');
+insert into KhachHang values(N'Nguyễn Văn',N'Đại',N'Nam','01671060357','09/09/1994',N'số 4, Minh Khai');
+insert into KhachHang values(N'Nguyễn Văn',N'Đạt',N'Nam','01671060778','02/17/1995',N'số 67, Đại La');
+insert into KhachHang values(N'Mai Văn',N'Kiên',N'Nam','01684061356','02/20/1986',N'số 204, Minh Khai');
+insert into KhachHang values(N'Lương Duy',N'Cường',N'Nam','01654061985','03/19/1983',N'số 255, NGuyễn Du');
+insert into KhachHang values(N'Hà Văn',N'Tiến',N'Nam','1644061255','01/18/1998',N'số 24, Hồ Tùng Mậu');
+--
+insert into KhachHang values(N'Nguyễn Văn',N'Lâm',N'Nam','0984060099','02/12/1988',N'số 134, Tôn Đức Thắng');
+insert into KhachHang values(N'Lê Nhật',N'Lực',N'Nam','0944060099','09/09/1991',N'số 551, Xã Đàn');
+insert into KhachHang values(N'Bùi Văn',N'Trọng',N'Nam','0924060099','02/16/1991',N'số 251, Nguyễn Trãi');
+insert into KhachHang values(N'Lương Văn',N'Toàn',N'Nam','0934060099','11/16/1990',N'số 284, Giải Phóng');
+insert into KhachHang values(N'Nguyễn Ngọc Quỳnh',N'Tú',N'Nữ','01651060771','11/29/1976',N'số 15, Tố Hữu');
+insert into KhachHang values(N'Phạm Thanh Tâm',N'Anh',N'Nữ','01651060772','03/19/1967',N'số 69, Thái Hà');
+insert into KhachHang values(N'Lê Thu',N'Hà',N'Nữ','01651060773','09/09/1996',N'số 319, Đại Cồ Việt');
+insert into KhachHang values(N'Trần Thu',N'Thảo',N'Nữ','01651060774','07/12/1998','số 99, Hồ Đắc Di');
+insert into KhachHang values(N'Lưu Ngọc',N'Anh',N'Nữ','01651060775','01/31/1972',N'số 119, Vũ Tông Phan');
+insert into KhachHang values(N'Bùi Lan',N'Châu',N'Nữ','01651060776','05/18/1974',N'số 1019, Giải Phóng');
+insert into KhachHang values(N'Nguyễn Lâm Tú',N'Châu',N'Nữ','01651060778','04/14/1999',N'số 32, Hồ Tùng Mậu');
+
+go
+insert into HoaDon values(100,104,10,'10/10/2018 8:00 AM',0);
+insert into HoaDon values(100,104,5,'10/10/2018 8:01',0);
+insert into HoaDon values(100,104,5,'10/10/2018 8:05',0);
+insert into HoaDon values(110,102,10,'10/10/2018 14:20',0);
+insert into HoaDon values(110,102,5,'10/10/2018 14:25',0);
+insert into HoaDon values(110,102,5,'10/10/2018 14:30',0);
+insert into HoaDon values(118,100,10,'10/09/2018 18:00',0);
+insert into HoaDon values(118,100,0,'10/09/2018 18:01',0);
+insert into HoaDon values(108,103,10,'10/09/2018 15:30',0);
+insert into HoaDon values(108,103,5,'10/09/2018 15:31',0);
+insert into HoaDon values(108,103,5,'10/09/2018 15:35',0);
+
+insert into HoaDon values(111,101,10,'10/09/2018 10:13',0);
+insert into HoaDon values(111,101,5,'10/09/2018 10:15',0);
+insert into HoaDon values(126,103,10,'10/08/2018 20:20',0);
+insert into HoaDon values(126,103,5,'10/08/2018 20:20',0);
+insert into HoaDon values(126,102,0,'10/10/2018 9:43',0);
+insert into HoaDon values(126,102,0,'10/10/2018 9:45',0);
+insert into HoaDon values(145,101,0,'10/09/2018 11:15',0);
+insert into HoaDon values(145,101,10,'10/09/2018 11:20',0);
+insert into HoaDon values(150,103,5,'10/10/2018 16:20',0);
+insert into HoaDon values(120,104,5,'10/09/2018 9:23',0);
+
+go
+insert into ChiTietHD values(100,123,2,0);
+insert into ChiTietHD values(100,100,1,0);
+
+insert into ChiTietHD values(101,111,3,0);
+insert into ChiTietHD values(102,102,2,0);
+insert into ChiTietHD values(102,142,1,0);
+insert into ChiTietHD values(103,106,2,0);
+insert into ChiTietHD values(103,107,2,0);
+
+insert into ChiTietHD values(104,120,1,0);
+insert into ChiTietHD values(104,121,2,0);
+insert into ChiTietHD values(104,122,3,0);
+insert into ChiTietHD values(105,125,1,0);
+insert into ChiTietHD values(106,124,2,0);
+insert into ChiTietHD values(107,130,1,0);
+insert into ChiTietHD values(108,131,2,0);
+insert into ChiTietHD values(109,135,1,0);
+insert into ChiTietHD values(109,108,2,0);
+insert into ChiTietHD values(110,124,1,0);
+insert into ChiTietHD values(110,125,1,0);
+insert into ChiTietHD values(111,110,3,0);
+insert into ChiTietHD values(112,111,1,0);
+insert into ChiTietHD values(113,110,1,0);
+insert into ChiTietHD values(114,112,2,0);
+insert into ChiTietHD values(115,117,1,0);
+insert into ChiTietHD values(116,123,3,0);
+
+insert into ChiTietHD values(117,105,1,0);
+insert into ChiTietHD values(117,143,1,0);
+insert into ChiTietHD values(118,114,1,0);
+insert into ChiTietHD values(118,116,1,0);
+insert into ChiTietHD values(118,135,1,0);
+insert into ChiTietHD values(119,131,2,0);
+insert into ChiTietHD values(119,140,1,0);
+insert into ChiTietHD values(120,119,1,0);
+insert into ChiTietHD values(120,120,1,0);

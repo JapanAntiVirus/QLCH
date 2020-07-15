@@ -1,0 +1,126 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace QuanLyCuaHang
+{
+    public partial class SuaSanPham : Form
+    {
+        public String msp;
+        public SuaSanPham()
+        {
+            InitializeComponent();
+        }
+
+        private void btnSuaSanPham_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SuaSanPham", QLBH.cnn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@MaSanPham", cbbMaSP.Text));
+                cmd.Parameters.Add(new SqlParameter("@TenSanPham", txtTenSP.Text.Trim()));
+                cmd.Parameters.Add(new SqlParameter("@DonViTinh", txtDonViTinh.Text.Trim()));
+                cmd.Parameters.Add(new SqlParameter("@DonGia", numDonGia.Value));
+                cmd.Parameters.Add(new SqlParameter("@SoLuongTon", numSLT.Value));
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Sửa thành công");
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void SuaSanPham_Load(object sender, EventArgs e)
+        {
+            string sql = "select MaSanPham from SanPham order by MaSanPham";
+            SqlCommand com = new SqlCommand(sql, QLBH.cnn);
+            com.CommandType = CommandType.Text;
+            var dr = com.ExecuteReader();
+            while (dr.Read())
+            {
+                cbbMaSP.Items.Add(dr[0].ToString());
+            }
+            dr.Close();
+            if (msp != null)
+            {
+                this.cbbMaSP.Text = msp;
+                this.cbbMaSP.Enabled = false;
+            }
+
+        }
+
+        private void cbbMaSP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string sql = string.Format("select * from SanPham where MaSanPham={0}",cbbMaSP.Text);
+            SqlCommand com = new SqlCommand(sql, QLBH.cnn);
+            com.CommandType = CommandType.Text;
+            var dr = com.ExecuteReader();
+            dr.Read();
+            txtTenSP.Text = dr[1].ToString();
+            txtDonViTinh.Text = dr[2].ToString();
+            numDonGia.Value = Convert.ToInt32(dr[3]);
+            numSLT.Value= Convert.ToInt32(dr[4]);
+            dr.Close();
+        }
+
+        private void labMaSP_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numSLT_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numDonGia_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtDonViTinh_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTenSP_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labSLT_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labDonViTinh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labTenSP_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labDonGia_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

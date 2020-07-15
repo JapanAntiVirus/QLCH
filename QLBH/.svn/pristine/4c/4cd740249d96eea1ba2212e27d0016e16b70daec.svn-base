@@ -1,0 +1,533 @@
+﻿namespace QuanLyCuaHang
+{
+    partial class QLBH
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.thêmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thêmSảnPhẩmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kháchHàngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nhânViênToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nhàCungCấpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nhậpHàngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hóaĐơnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lịchSửToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.labSL = new System.Windows.Forms.Label();
+            this.numSoLuong = new System.Windows.Forms.NumericUpDown();
+            this.btnThemSP = new System.Windows.Forms.Button();
+            this.labSearch = new System.Windows.Forms.Label();
+            this.txtTimKiem = new System.Windows.Forms.TextBox();
+            this.dgvSanPham = new System.Windows.Forms.DataGridView();
+            this.labHD = new System.Windows.Forms.Label();
+            this.btnXoaSP = new System.Windows.Forms.Button();
+            this.btnTang = new System.Windows.Forms.Button();
+            this.btnGiam = new System.Windows.Forms.Button();
+            this.dgvHoaDon = new System.Windows.Forms.DataGridView();
+            this.labTienHang = new System.Windows.Forms.Label();
+            this.labGiamGia = new System.Windows.Forms.Label();
+            this.labTongTien = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numGiamGia = new System.Windows.Forms.NumericUpDown();
+            this.btnTaoLaiHD = new System.Windows.Forms.Button();
+            this.btnXuatHD = new System.Windows.Forms.Button();
+            this.numTienHang = new System.Windows.Forms.NumericUpDown();
+            this.numTongTien = new System.Windows.Forms.NumericUpDown();
+            this.labTenSP = new System.Windows.Forms.Label();
+            this.labTenSP2 = new System.Windows.Forms.Label();
+            this.labMaK = new System.Windows.Forms.Label();
+            this.cbbMaK = new System.Windows.Forms.ComboBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusNTenNV = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusNhomQuyen = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoLuong)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSanPham)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGiamGia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTienHang)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTongTien)).BeginInit();
+            this.statusStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thêmToolStripMenuItem,
+            this.hóaĐơnToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1370, 24);
+            this.menuStrip.TabIndex = 0;
+            this.menuStrip.Text = "menuStrip";
+            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
+            // 
+            // thêmToolStripMenuItem
+            // 
+            this.thêmToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thêmSảnPhẩmToolStripMenuItem,
+            this.kháchHàngToolStripMenuItem,
+            this.nhânViênToolStripMenuItem,
+            this.nhàCungCấpToolStripMenuItem,
+            this.nhậpHàngToolStripMenuItem});
+            this.thêmToolStripMenuItem.Name = "thêmToolStripMenuItem";
+            this.thêmToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.thêmToolStripMenuItem.Text = "Chỉnh sửa";
+            // 
+            // thêmSảnPhẩmToolStripMenuItem
+            // 
+            this.thêmSảnPhẩmToolStripMenuItem.Name = "thêmSảnPhẩmToolStripMenuItem";
+            this.thêmSảnPhẩmToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.thêmSảnPhẩmToolStripMenuItem.Text = "Sản phẩm";
+            this.thêmSảnPhẩmToolStripMenuItem.Click += new System.EventHandler(this.thêmSảnPhẩmToolStripMenuItem_Click);
+            // 
+            // kháchHàngToolStripMenuItem
+            // 
+            this.kháchHàngToolStripMenuItem.Name = "kháchHàngToolStripMenuItem";
+            this.kháchHàngToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kháchHàngToolStripMenuItem.Text = "Khách hàng";
+            this.kháchHàngToolStripMenuItem.Click += new System.EventHandler(this.kháchHàngToolStripMenuItem_Click);
+            // 
+            // nhânViênToolStripMenuItem
+            // 
+            this.nhânViênToolStripMenuItem.Name = "nhânViênToolStripMenuItem";
+            this.nhânViênToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nhânViênToolStripMenuItem.Text = "Nhân viên";
+            this.nhânViênToolStripMenuItem.Click += new System.EventHandler(this.nhânViênToolStripMenuItem_Click);
+            // 
+            // nhàCungCấpToolStripMenuItem
+            // 
+            this.nhàCungCấpToolStripMenuItem.Name = "nhàCungCấpToolStripMenuItem";
+            this.nhàCungCấpToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nhàCungCấpToolStripMenuItem.Text = "Nhà cung cấp";
+            this.nhàCungCấpToolStripMenuItem.Click += new System.EventHandler(this.nhàCungCấpToolStripMenuItem_Click);
+            // 
+            // nhậpHàngToolStripMenuItem
+            // 
+            this.nhậpHàngToolStripMenuItem.Name = "nhậpHàngToolStripMenuItem";
+            this.nhậpHàngToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.nhậpHàngToolStripMenuItem.Text = "Nhập hàng";
+            this.nhậpHàngToolStripMenuItem.Click += new System.EventHandler(this.nhậpHàngToolStripMenuItem_Click);
+            // 
+            // hóaĐơnToolStripMenuItem
+            // 
+            this.hóaĐơnToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lịchSửToolStripMenuItem});
+            this.hóaĐơnToolStripMenuItem.Name = "hóaĐơnToolStripMenuItem";
+            this.hóaĐơnToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.hóaĐơnToolStripMenuItem.Text = "Hóa đơn";
+            this.hóaĐơnToolStripMenuItem.Click += new System.EventHandler(this.hóaĐơnToolStripMenuItem_Click);
+            // 
+            // lịchSửToolStripMenuItem
+            // 
+            this.lịchSửToolStripMenuItem.Name = "lịchSửToolStripMenuItem";
+            this.lịchSửToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lịchSửToolStripMenuItem.Text = "Lịch sử";
+            this.lịchSửToolStripMenuItem.Click += new System.EventHandler(this.lịchSửToolStripMenuItem_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // labSL
+            // 
+            this.labSL.AutoSize = true;
+            this.labSL.Location = new System.Drawing.Point(399, 97);
+            this.labSL.Name = "labSL";
+            this.labSL.Size = new System.Drawing.Size(52, 13);
+            this.labSL.TabIndex = 12;
+            this.labSL.Text = "Số lượng:";
+            // 
+            // numSoLuong
+            // 
+            this.numSoLuong.Location = new System.Drawing.Point(467, 92);
+            this.numSoLuong.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numSoLuong.Name = "numSoLuong";
+            this.numSoLuong.Size = new System.Drawing.Size(59, 20);
+            this.numSoLuong.TabIndex = 11;
+            this.numSoLuong.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // btnThemSP
+            // 
+            this.btnThemSP.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnThemSP.Location = new System.Drawing.Point(555, 92);
+            this.btnThemSP.Name = "btnThemSP";
+            this.btnThemSP.Size = new System.Drawing.Size(70, 23);
+            this.btnThemSP.TabIndex = 10;
+            this.btnThemSP.Text = "Thêm >>";
+            this.btnThemSP.UseVisualStyleBackColor = true;
+            this.btnThemSP.Click += new System.EventHandler(this.btnThemSP_Click);
+            // 
+            // labSearch
+            // 
+            this.labSearch.AutoSize = true;
+            this.labSearch.Location = new System.Drawing.Point(30, 97);
+            this.labSearch.Name = "labSearch";
+            this.labSearch.Size = new System.Drawing.Size(52, 13);
+            this.labSearch.TabIndex = 9;
+            this.labSearch.Text = "Tìm kiếm:";
+            // 
+            // txtTimKiem
+            // 
+            this.txtTimKiem.Location = new System.Drawing.Point(88, 92);
+            this.txtTimKiem.Name = "txtTimKiem";
+            this.txtTimKiem.Size = new System.Drawing.Size(126, 20);
+            this.txtTimKiem.TabIndex = 8;
+            this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
+            // 
+            // dgvSanPham
+            // 
+            this.dgvSanPham.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSanPham.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvSanPham.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSanPham.Location = new System.Drawing.Point(33, 134);
+            this.dgvSanPham.MultiSelect = false;
+            this.dgvSanPham.Name = "dgvSanPham";
+            this.dgvSanPham.ReadOnly = true;
+            this.dgvSanPham.Size = new System.Drawing.Size(592, 407);
+            this.dgvSanPham.TabIndex = 7;
+            this.dgvSanPham.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSanPham_CellMouseClick);
+            this.dgvSanPham.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSanPham_CellMouseDoubleClick);
+            // 
+            // labHD
+            // 
+            this.labHD.AutoSize = true;
+            this.labHD.Font = new System.Drawing.Font("Times New Roman", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labHD.ForeColor = System.Drawing.Color.Red;
+            this.labHD.Location = new System.Drawing.Point(955, 9);
+            this.labHD.Name = "labHD";
+            this.labHD.Size = new System.Drawing.Size(294, 31);
+            this.labHD.TabIndex = 13;
+            this.labHD.Text = "HÓA ĐƠN BÁN HÀNG";
+            // 
+            // btnXoaSP
+            // 
+            this.btnXoaSP.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnXoaSP.Location = new System.Drawing.Point(696, 134);
+            this.btnXoaSP.Name = "btnXoaSP";
+            this.btnXoaSP.Size = new System.Drawing.Size(64, 23);
+            this.btnXoaSP.TabIndex = 14;
+            this.btnXoaSP.Text = "Xóa";
+            this.btnXoaSP.UseVisualStyleBackColor = true;
+            this.btnXoaSP.Click += new System.EventHandler(this.btnXoa_Click);
+            // 
+            // btnTang
+            // 
+            this.btnTang.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTang.Location = new System.Drawing.Point(696, 163);
+            this.btnTang.Name = "btnTang";
+            this.btnTang.Size = new System.Drawing.Size(64, 23);
+            this.btnTang.TabIndex = 15;
+            this.btnTang.Text = "Tăng 1";
+            this.btnTang.UseVisualStyleBackColor = true;
+            this.btnTang.Click += new System.EventHandler(this.btnTang_Click);
+            // 
+            // btnGiam
+            // 
+            this.btnGiam.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGiam.Location = new System.Drawing.Point(696, 201);
+            this.btnGiam.Name = "btnGiam";
+            this.btnGiam.Size = new System.Drawing.Size(64, 23);
+            this.btnGiam.TabIndex = 16;
+            this.btnGiam.Text = "Giảm 1";
+            this.btnGiam.UseVisualStyleBackColor = true;
+            this.btnGiam.Click += new System.EventHandler(this.btnGiam_Click);
+            // 
+            // dgvHoaDon
+            // 
+            this.dgvHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHoaDon.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHoaDon.Location = new System.Drawing.Point(782, 134);
+            this.dgvHoaDon.Name = "dgvHoaDon";
+            this.dgvHoaDon.ReadOnly = true;
+            this.dgvHoaDon.Size = new System.Drawing.Size(572, 407);
+            this.dgvHoaDon.TabIndex = 17;
+            this.dgvHoaDon.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvHoaDon_CellMouseClick);
+            // 
+            // labTienHang
+            // 
+            this.labTienHang.AutoSize = true;
+            this.labTienHang.Location = new System.Drawing.Point(1166, 576);
+            this.labTienHang.Name = "labTienHang";
+            this.labTienHang.Size = new System.Drawing.Size(58, 13);
+            this.labTienHang.TabIndex = 21;
+            this.labTienHang.Text = "Tiền hàng:";
+            // 
+            // labGiamGia
+            // 
+            this.labGiamGia.AutoSize = true;
+            this.labGiamGia.Location = new System.Drawing.Point(1169, 611);
+            this.labGiamGia.Name = "labGiamGia";
+            this.labGiamGia.Size = new System.Drawing.Size(70, 13);
+            this.labGiamGia.TabIndex = 22;
+            this.labGiamGia.Text = "Giảm Giá (%):";
+            // 
+            // labTongTien
+            // 
+            this.labTongTien.AutoSize = true;
+            this.labTongTien.Location = new System.Drawing.Point(1169, 654);
+            this.labTongTien.Name = "labTongTien";
+            this.labTongTien.Size = new System.Drawing.Size(55, 13);
+            this.labTongTien.TabIndex = 23;
+            this.labTongTien.Text = "Tổng tiền:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1405, 611);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(15, 13);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "%";
+            // 
+            // numGiamGia
+            // 
+            this.numGiamGia.Location = new System.Drawing.Point(1240, 611);
+            this.numGiamGia.Name = "numGiamGia";
+            this.numGiamGia.Size = new System.Drawing.Size(108, 20);
+            this.numGiamGia.TabIndex = 25;
+            this.numGiamGia.ValueChanged += new System.EventHandler(this.numGiamGia_ValueChanged);
+            // 
+            // btnTaoLaiHD
+            // 
+            this.btnTaoLaiHD.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTaoLaiHD.Location = new System.Drawing.Point(696, 244);
+            this.btnTaoLaiHD.Name = "btnTaoLaiHD";
+            this.btnTaoLaiHD.Size = new System.Drawing.Size(64, 48);
+            this.btnTaoLaiHD.TabIndex = 26;
+            this.btnTaoLaiHD.Text = "Tạo lại hóa đơn";
+            this.btnTaoLaiHD.UseVisualStyleBackColor = true;
+            this.btnTaoLaiHD.Click += new System.EventHandler(this.btnTaoLaiHD_Click);
+            // 
+            // btnXuatHD
+            // 
+            this.btnXuatHD.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnXuatHD.Location = new System.Drawing.Point(782, 611);
+            this.btnXuatHD.Name = "btnXuatHD";
+            this.btnXuatHD.Size = new System.Drawing.Size(79, 56);
+            this.btnXuatHD.TabIndex = 27;
+            this.btnXuatHD.Text = "Xuất hóa đơn";
+            this.btnXuatHD.UseVisualStyleBackColor = true;
+            this.btnXuatHD.Click += new System.EventHandler(this.btnXuatHD_Click);
+            // 
+            // numTienHang
+            // 
+            this.numTienHang.Enabled = false;
+            this.numTienHang.Location = new System.Drawing.Point(1240, 574);
+            this.numTienHang.Maximum = new decimal(new int[] {
+            1316134911,
+            2328,
+            0,
+            0});
+            this.numTienHang.Name = "numTienHang";
+            this.numTienHang.Size = new System.Drawing.Size(108, 20);
+            this.numTienHang.TabIndex = 29;
+            this.numTienHang.ValueChanged += new System.EventHandler(this.numTienHang_ValueChanged);
+            // 
+            // numTongTien
+            // 
+            this.numTongTien.Enabled = false;
+            this.numTongTien.Location = new System.Drawing.Point(1240, 652);
+            this.numTongTien.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
+            this.numTongTien.Name = "numTongTien";
+            this.numTongTien.Size = new System.Drawing.Size(108, 20);
+            this.numTongTien.TabIndex = 30;
+            // 
+            // labTenSP
+            // 
+            this.labTenSP.AutoSize = true;
+            this.labTenSP.Location = new System.Drawing.Point(399, 55);
+            this.labTenSP.Name = "labTenSP";
+            this.labTenSP.Size = new System.Drawing.Size(101, 13);
+            this.labTenSP.TabIndex = 31;
+            this.labTenSP.Text = "Sản phẩm đã chọn:";
+            // 
+            // labTenSP2
+            // 
+            this.labTenSP2.AutoSize = true;
+            this.labTenSP2.Location = new System.Drawing.Point(779, 99);
+            this.labTenSP2.Name = "labTenSP2";
+            this.labTenSP2.Size = new System.Drawing.Size(101, 13);
+            this.labTenSP2.TabIndex = 32;
+            this.labTenSP2.Text = "Sản phẩm đã chọn:";
+            // 
+            // labMaK
+            // 
+            this.labMaK.AutoSize = true;
+            this.labMaK.Location = new System.Drawing.Point(1180, 107);
+            this.labMaK.Name = "labMaK";
+            this.labMaK.Size = new System.Drawing.Size(58, 13);
+            this.labMaK.TabIndex = 33;
+            this.labMaK.Text = "Mã khách:";
+            // 
+            // cbbMaK
+            // 
+            this.cbbMaK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbbMaK.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbMaK.FormattingEnabled = true;
+            this.cbbMaK.Location = new System.Drawing.Point(1259, 99);
+            this.cbbMaK.Name = "cbbMaK";
+            this.cbbMaK.Size = new System.Drawing.Size(95, 21);
+            this.cbbMaK.TabIndex = 34;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusNTenNV,
+            this.statusNhomQuyen});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 675);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1370, 22);
+            this.statusStrip1.TabIndex = 36;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // statusNTenNV
+            // 
+            this.statusNTenNV.ForeColor = System.Drawing.Color.Red;
+            this.statusNTenNV.Name = "statusNTenNV";
+            this.statusNTenNV.Size = new System.Drawing.Size(45, 17);
+            this.statusNTenNV.Text = "Tên NV";
+            // 
+            // statusNhomQuyen
+            // 
+            this.statusNhomQuyen.ForeColor = System.Drawing.Color.Red;
+            this.statusNhomQuyen.Name = "statusNhomQuyen";
+            this.statusNhomQuyen.Size = new System.Drawing.Size(42, 17);
+            this.statusNhomQuyen.Text = "Quyền";
+            // 
+            // QLBH
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.ClientSize = new System.Drawing.Size(1370, 697);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.cbbMaK);
+            this.Controls.Add(this.labMaK);
+            this.Controls.Add(this.labTenSP2);
+            this.Controls.Add(this.labTenSP);
+            this.Controls.Add(this.numTongTien);
+            this.Controls.Add(this.numTienHang);
+            this.Controls.Add(this.btnXuatHD);
+            this.Controls.Add(this.btnTaoLaiHD);
+            this.Controls.Add(this.numGiamGia);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labTongTien);
+            this.Controls.Add(this.labGiamGia);
+            this.Controls.Add(this.labTienHang);
+            this.Controls.Add(this.dgvHoaDon);
+            this.Controls.Add(this.btnGiam);
+            this.Controls.Add(this.btnTang);
+            this.Controls.Add(this.btnXoaSP);
+            this.Controls.Add(this.labHD);
+            this.Controls.Add(this.labSL);
+            this.Controls.Add(this.numSoLuong);
+            this.Controls.Add(this.btnThemSP);
+            this.Controls.Add(this.labSearch);
+            this.Controls.Add(this.txtTimKiem);
+            this.Controls.Add(this.dgvSanPham);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
+            this.Name = "QLBH";
+            this.Text = "Quản lý bán hàng";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.QLBH_FormClosed);
+            this.Load += new System.EventHandler(this.QLBH_Load);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoLuong)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSanPham)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numGiamGia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTienHang)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTongTien)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem thêmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thêmSảnPhẩmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kháchHàngToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nhânViênToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nhàCungCấpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nhậpHàngToolStripMenuItem;
+        private System.Windows.Forms.Label labSL;
+        private System.Windows.Forms.NumericUpDown numSoLuong;
+        private System.Windows.Forms.Button btnThemSP;
+        private System.Windows.Forms.Label labSearch;
+        private System.Windows.Forms.TextBox txtTimKiem;
+        private System.Windows.Forms.DataGridView dgvSanPham;
+        private System.Windows.Forms.Label labHD;
+        private System.Windows.Forms.Button btnXoaSP;
+        private System.Windows.Forms.Button btnTang;
+        private System.Windows.Forms.Button btnGiam;
+        private System.Windows.Forms.DataGridView dgvHoaDon;
+        private System.Windows.Forms.Label labTienHang;
+        private System.Windows.Forms.Label labGiamGia;
+        private System.Windows.Forms.Label labTongTien;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numGiamGia;
+        private System.Windows.Forms.Button btnTaoLaiHD;
+        private System.Windows.Forms.Button btnXuatHD;
+        private System.Windows.Forms.NumericUpDown numTienHang;
+        private System.Windows.Forms.NumericUpDown numTongTien;
+        private System.Windows.Forms.Label labTenSP;
+        private System.Windows.Forms.Label labTenSP2;
+        private System.Windows.Forms.ToolStripMenuItem hóaĐơnToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lịchSửToolStripMenuItem;
+        private System.Windows.Forms.Label labMaK;
+        private System.Windows.Forms.ComboBox cbbMaK;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel statusNTenNV;
+        private System.Windows.Forms.ToolStripStatusLabel statusNhomQuyen;
+    }
+}
+
